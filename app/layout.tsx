@@ -5,7 +5,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 
 export const metadata: Metadata = {
-  title: 'RESUMEMATCH — AI Resume Analysis',
+  title: 'FITLOOP — AI Resume Analysis',
   description: 'Systems that analyze, not screens that display. AI-powered resume matching.',
 }
 

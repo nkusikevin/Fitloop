@@ -2,11 +2,18 @@
 
 import React from "react"
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { LogOut, Loader2, Upload, File, ArrowRight } from 'lucide-react'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { LogOut, Loader2, Upload, File, ArrowRight, Settings } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Resume from '@/components/resume/resume-analysis'
 import { extractTextFromPDF } from '@/lib/pdf-utils'
@@ -23,6 +30,32 @@ export default function DashboardPage() {
   const [results, setResults] = useState<any>(null)
   const [error, setError] = useState('')
   const [isExtractingPDF, setIsExtractingPDF] = useState(false)
+  const [selectedProvider, setSelectedProvider] = useState<string>('')
+  const [availableProviders, setAvailableProviders] = useState<any[]>([])
+
+  useEffect(() => {
+    fetchAvailableProviders()
+  }, [])
+
+  const fetchAvailableProviders = () => {
+    try {
+      const stored = localStorage.getItem('apiKeys')
+      console.log('🔍 Dashboard - Fetching providers from localStorage:', stored)
+      if (stored) {
+        const keys = JSON.parse(stored)
+        console.log('✅ Dashboard - Found providers:', keys)
+        setAvailableProviders(keys || [])
+        if (keys?.length > 0) {
+          setSelectedProvider(keys[0].provider)
+          console.log('📌 Dashboard - Selected default provider:', keys[0].provider)
+        }
+      } else {
+        console.log('⚠️ Dashboard - No providers found in localStorage')
+      }
+    } catch (error) {
+      console.error('❌ Dashboard - Error fetching providers:', error)
+    }
+  }
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
@@ -63,6 +96,34 @@ export default function DashboardPage() {
       return
     }
 
+    // Get the selected provider's API key from localStorage
+    const stored = localStorage.getItem('apiKeys')
+    let apiKeyConfig = null
+
+    console.log('🔑 Analyze - Reading from localStorage:', stored)
+
+    if (stored) {
+      const keys = JSON.parse(stored)
+      console.log('📋 Analyze - All keys:', keys)
+      console.log('🎯 Analyze - Selected provider:', selectedProvider)
+      apiKeyConfig = keys.find((key: any) => key.provider === selectedProvider && key.is_active)
+      console.log('✅ Analyze - Found config:', apiKeyConfig ? { ...apiKeyConfig, api_key: '***' } : null)
+    }
+
+    if (!apiKeyConfig || !apiKeyConfig.api_key) {
+      console.error('❌ Analyze - No valid API key found')
+      setError('No API key configured for selected provider. Please add one in Settings.')
+      return
+    }
+
+    console.log('📤 Sending request with:', {
+      provider: apiKeyConfig.provider,
+      modelName: apiKeyConfig.model_name,
+      hasApiKey: !!apiKeyConfig.api_key,
+      apiKeyLength: apiKeyConfig.api_key?.length,
+      apiKey: apiKeyConfig.api_key
+    })
+
     setError('')
     setIsLoading(true)
 
@@ -70,7 +131,13 @@ export default function DashboardPage() {
       const response = await fetch('/api/analyze-resume', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ resume, jobPosting }),
+        body: JSON.stringify({
+          resume,
+          jobPosting,
+          apiKey: apiKeyConfig.api_key,
+          provider: apiKeyConfig.provider,
+          modelName: apiKeyConfig.model_name
+        }),
       })
 
       const data = await response.json()
@@ -89,16 +156,45 @@ export default function DashboardPage() {
     }
   }
 
+  const getProviderName = (provider: string) => {
+    const names: Record<string, string> = {
+      openai: 'OpenAI',
+      anthropic: 'Anthropic',
+      google: 'Google',
+    }
+    return names[provider] || provider
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border/50">
         <div className="px-6 md:px-12 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <span className="font-display text-2xl tracking-wider">RESUMEMATCH</span>
+            <span className="font-display text-2xl tracking-wider">FITLOOP</span>
             <span className="label-mono text-muted-foreground hidden md:inline">DASHBOARD</span>
           </Link>
           <div className="flex items-center gap-3">
+            <Link href="/profile">
+              <Button
+                variant="outline"
+                className="gap-2 bg-transparent border-border/50 hover:border-accent hover:text-accent font-mono uppercase text-[10px] tracking-widest"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                Profile
+              </Button>
+            </Link>
+            <Link href="/settings">
+              <Button
+                variant="outline"
+                className="gap-2 bg-transparent border-border/50 hover:border-accent hover:text-accent font-mono uppercase text-[10px] tracking-widest"
+              >
+                <Settings className="w-3.5 h-3.5" />
+                Settings
+              </Button>
+            </Link>
             <Button
               variant="outline"
               onClick={handleSignOut}
@@ -185,6 +281,35 @@ export default function DashboardPage() {
                     onChange={(e) => setJobPosting(e.target.value)}
                     className="bg-secondary border-border/50 h-56 font-mono text-sm focus:border-accent"
                   />
+                </div>
+
+                <div className="h-px bg-border/30" />
+
+                {/* AI Provider Selection */}
+                <div>
+                  <label className="label-mono text-muted-foreground mb-4 block">AI PROVIDER</label>
+                  {availableProviders.length > 0 ? (
+                    <Select value={selectedProvider} onValueChange={setSelectedProvider}>
+                      <SelectTrigger className="bg-secondary border-border/50 font-mono text-sm">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {availableProviders.map((provider) => (
+                          <SelectItem key={provider.id} value={provider.provider}>
+                            {getProviderName(provider.provider)} - {provider.model_name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <div className="bg-yellow-500/10 border border-yellow-500/30 p-4 font-mono text-xs text-yellow-500">
+                      No API keys configured. Go to{' '}
+                      <Link href="/settings" className="underline">
+                        Settings
+                      </Link>{' '}
+                      to add your API key.
+                    </div>
+                  )}
                 </div>
 
                 {error && (

@@ -81,7 +81,7 @@ export default function Resume({ data, onNewAnalysis }: ResumeProps) {
     doc.setFillColor(13, 13, 13)
     doc.rect(0, 0, 210, 30, 'F')
     doc.setTextColor(255, 165, 0)
-    addText('RESUMEMATCH — Analysis Report', 18, true)
+    addText('FITLOOP — Analysis Report', 18, true)
     yPosition = 40
 
     doc.setTextColor(0, 0, 0)

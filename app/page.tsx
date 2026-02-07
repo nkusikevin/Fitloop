@@ -12,7 +12,7 @@ export default function Home() {
       <nav className="border-b border-border/50 fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-sm">
         <div className=" px-6 md:px-12 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <span className="font-display text-2xl tracking-wider">RESUMEMATCH</span>
+            <span className="font-display text-2xl tracking-wider">FITLOOP</span>
             <span className="label-mono text-muted-foreground hidden md:inline">v.01</span>
           </Link>
           <div className="flex items-center gap-4">
@@ -45,8 +45,7 @@ export default function Home() {
           </div>
 
           <h1 className="font-display text-[clamp(4rem,12vw,10rem)] leading-[0.85] tracking-wider text-foreground">
-            RESUME<br />
-            <span className="text-accent">MATCH</span>
+            FIT<span className="text-accent">LOOP</span>
           </h1>
 
           <div className="max-w-xl space-y-6">
@@ -166,35 +165,65 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer / Colophon */}
-      <footer className="border-t border-border/50 py-16">
-        <div className=" px-6 md:px-28">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-            <div>
-              <div className="label-mono text-accent mb-3">DESIGN</div>
-              <p className="font-mono text-xs text-muted-foreground">Interface Studies</p>
+      {/* Footer */}
+      <footer className="border-t border-border/50">
+        <div className="px-6 md:px-28">
+          {/* Top row */}
+          <div className="py-16 grid grid-cols-1 md:grid-cols-12 gap-12">
+            {/* Brand */}
+            <div className="md:col-span-4 space-y-4">
+              <span className="font-display text-3xl tracking-wider">FITLOOP</span>
+              <p className="font-mono text-xs text-muted-foreground leading-relaxed max-w-xs">
+                AI-powered resume intelligence platform. Helping professionals land the right role through precision analysis.
+              </p>
             </div>
-            <div>
-              <div className="label-mono text-accent mb-3">STACK</div>
-              <p className="font-mono text-xs text-muted-foreground">Next.js, Tailwind CSS, Vercel</p>
+
+            {/* Links */}
+            <div className="md:col-span-2">
+              <div className="label-mono text-foreground mb-4">PRODUCT</div>
+              <ul className="space-y-3">
+                <li><Link href="/auth/signup" className="font-mono text-xs text-muted-foreground hover:text-accent transition">Get Started</Link></li>
+                <li><Link href="#how-it-works" className="font-mono text-xs text-muted-foreground hover:text-accent transition">How It Works</Link></li>
+                <li><Link href="#" className="font-mono text-xs text-muted-foreground hover:text-accent transition">Pricing</Link></li>
+              </ul>
             </div>
-            <div>
-              <div className="label-mono text-accent mb-3">TYPOGRAPHY</div>
-              <p className="font-mono text-xs text-muted-foreground">Bebas Neue, IBM Plex</p>
+
+            <div className="md:col-span-2">
+              <div className="label-mono text-foreground mb-4">COMPANY</div>
+              <ul className="space-y-3">
+                <li><Link href="#" className="font-mono text-xs text-muted-foreground hover:text-accent transition">About</Link></li>
+                <li><Link href="#" className="font-mono text-xs text-muted-foreground hover:text-accent transition">Careers</Link></li>
+                <li><Link href="#" className="font-mono text-xs text-muted-foreground hover:text-accent transition">Contact</Link></li>
+              </ul>
             </div>
-            <div>
-              <div className="label-mono text-accent mb-3">YEAR</div>
-              <p className="font-mono text-xs text-muted-foreground">2025 / Ongoing</p>
+
+            <div className="md:col-span-2">
+              <div className="label-mono text-foreground mb-4">LEGAL</div>
+              <ul className="space-y-3">
+                <li><Link href="#" className="font-mono text-xs text-muted-foreground hover:text-accent transition">Privacy Policy</Link></li>
+                <li><Link href="#" className="font-mono text-xs text-muted-foreground hover:text-accent transition">Terms of Service</Link></li>
+                <li><Link href="#" className="font-mono text-xs text-muted-foreground hover:text-accent transition">Cookie Policy</Link></li>
+              </ul>
+            </div>
+
+            <div className="md:col-span-2">
+              <div className="label-mono text-foreground mb-4">CONNECT</div>
+              <ul className="space-y-3">
+                <li><Link href="#" className="font-mono text-xs text-muted-foreground hover:text-accent transition">LinkedIn</Link></li>
+                <li><Link href="#" className="font-mono text-xs text-muted-foreground hover:text-accent transition">Twitter / X</Link></li>
+                <li><Link href="#" className="font-mono text-xs text-muted-foreground hover:text-accent transition">GitHub</Link></li>
+              </ul>
             </div>
           </div>
-          <div className="flex items-center justify-between pt-8 border-t border-border/50">
+
+          {/* Bottom bar */}
+          <div className="border-t border-border/50 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="label-mono text-muted-foreground">
-              &copy; 2025 RESUMEMATCH. ALL RIGHTS RESERVED.
+              &copy; {new Date().getFullYear()} FITLOOP INC. ALL RIGHTS RESERVED.
             </p>
-            <div className="flex gap-8">
-              <Link href="#" className="label-mono text-muted-foreground hover:text-accent transition">Privacy</Link>
-              <Link href="#" className="label-mono text-muted-foreground hover:text-accent transition">Terms</Link>
-            </div>
+            <p className="font-mono text-xs text-muted-foreground">
+              Built by Kevin
+            </p>
           </div>
         </div>
       </footer>

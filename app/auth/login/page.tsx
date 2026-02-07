@@ -49,7 +49,7 @@ export default function LoginPage() {
         {/* Logo */}
         <Link href="/" className="inline-block mb-12 group">
           <div className="font-display text-2xl tracking-wider group-hover:text-accent transition">
-            RESUMEMATCH
+            FITLOOP
           </div>
           <div className="label-mono text-muted-foreground mt-1">v.01 / Experimental Build</div>
         </Link>
