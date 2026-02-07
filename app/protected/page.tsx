@@ -16,6 +16,7 @@ import {
 import { LogOut, Loader2, Upload, File, ArrowRight, Settings } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Resume from '@/components/resume/resume-analysis'
+import { ResumeManager } from '@/components/resume/resume-manager'
 import { extractTextFromPDF } from '@/lib/pdf-utils'
 import Link from 'next/link'
 
@@ -60,6 +61,12 @@ export default function DashboardPage() {
   const handleSignOut = async () => {
     await supabase.auth.signOut()
     router.push('/')
+  }
+
+  const handleResumeSelect = (resumeText: string, fileName: string) => {
+    setResume(resumeText)
+    setResumeFileName(fileName)
+    setError('')
   }
 
   const handlePDFUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -332,6 +339,11 @@ export default function DashboardPage() {
 
             {/* Info Section */}
             <div className="space-y-6">
+              {/* Resume Manager */}
+              <div className="border border-border/50 bg-card p-6">
+                <ResumeManager onResumeSelect={handleResumeSelect} />
+              </div>
+
               <div className="border border-border/50 bg-card p-6 space-y-5">
                 <div>
                   <span className="label-mono text-accent">ANALYSIS SCOPE</span>
