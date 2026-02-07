@@ -1,63 +1,63 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import { CheckCircle, Mail, ArrowRight } from 'lucide-react'
 
 export default function SignUpSuccessPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white flex items-center justify-center p-6 md:p-10">
+    <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="inline-block mb-8 group">
-          <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent group-hover:from-blue-300 group-hover:to-cyan-300 transition">
-            ResumeMatch
+          <div className="font-display text-2xl tracking-wider group-hover:text-accent transition">
+            RESUMEMATCH
           </div>
+          <div className="label-mono text-muted-foreground mt-1">v.01 / Experimental Build</div>
         </Link>
 
-        <Card className="bg-slate-800/50 border-slate-700 p-8">
+        <div className="border border-border/50 bg-card p-8">
           <div className="space-y-6 text-center">
             {/* Success Icon */}
             <div className="flex justify-center">
-              <div className="rounded-full bg-green-500/20 border border-green-500/50 p-4">
-                <CheckCircle className="w-12 h-12 text-green-400" />
+              <div className="border border-accent/50 bg-accent/10 p-4">
+                <CheckCircle className="w-12 h-12 text-accent" />
               </div>
             </div>
 
             {/* Content */}
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold">Account Created!</h1>
-              <p className="text-slate-400">
-                Your account has been successfully created.
+              <h1 className="font-display text-4xl tracking-wider">ACCOUNT CREATED</h1>
+              <p className="font-mono text-xs text-muted-foreground">
+                Your account has been successfully initialized.
               </p>
             </div>
 
             {/* Email Verification Message */}
-            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 space-y-2">
-              <div className="flex items-center justify-center gap-2 text-blue-300">
+            <div className="bg-accent/5 border border-accent/30 p-4 space-y-2">
+              <div className="flex items-center justify-center gap-2 text-accent">
                 <Mail className="w-5 h-5" />
-                <span className="font-semibold">Verify Your Email</span>
+                <span className="label-mono">VERIFY YOUR EMAIL</span>
               </div>
-              <p className="text-sm text-slate-400">
+              <p className="font-mono text-xs text-muted-foreground">
                 We&apos;ve sent a confirmation link to your email. Click it to verify your account and get started.
               </p>
             </div>
 
             {/* Next Steps */}
-            <div className="bg-slate-900/50 rounded-lg p-4 space-y-3">
-              <p className="text-sm font-semibold text-slate-300">What&apos;s Next?</p>
-              <ul className="text-sm text-slate-400 space-y-2">
+            <div className="bg-secondary p-4 space-y-3">
+              <p className="label-mono text-foreground">NEXT STEPS</p>
+              <ul className="font-mono text-xs text-muted-foreground space-y-2">
                 <li className="flex gap-2">
-                  <span className="text-blue-400">1.</span>
+                  <span className="text-accent">01.</span>
                   <span>Check your email inbox</span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="text-blue-400">2.</span>
+                  <span className="text-accent">02.</span>
                   <span>Click the verification link</span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="text-blue-400">3.</span>
+                  <span className="text-accent">03.</span>
                   <span>Sign in and start analyzing</span>
                 </li>
               </ul>
@@ -66,24 +66,24 @@ export default function SignUpSuccessPage() {
             {/* Actions */}
             <div className="space-y-2">
               <Link href="/auth/login">
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 gap-2">
-                  Back to Sign In <ArrowRight className="w-4 h-4" />
+                <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-mono uppercase text-xs tracking-widest h-11 gap-2">
+                  BACK TO SIGN IN <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
               <Link href="/">
-                <Button variant="outline" className="w-full bg-transparent">
-                  Return Home
+                <Button variant="outline" className="w-full bg-transparent border-border/50 hover:border-accent font-mono uppercase text-xs tracking-widest h-11 mt-2">
+                  RETURN HOME
                 </Button>
               </Link>
             </div>
 
             {/* Help */}
-            <p className="text-xs text-slate-500">
+            <p className="label-mono text-muted-foreground">
               Didn&apos;t receive the email?{' '}
-              <button className="text-blue-400 hover:text-blue-300">Resend</button>
+              <button className="text-accent hover:text-accent/80">Resend</button>
             </p>
           </div>
-        </Card>
+        </div>
       </div>
     </div>
   )

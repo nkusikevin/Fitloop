@@ -5,13 +5,12 @@ import React from "react"
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
-import { LogOut, Loader2, Upload, File } from 'lucide-react'
+import { LogOut, Loader2, Upload, File, ArrowRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Resume from '@/components/resume/resume-analysis'
 import { extractTextFromPDF } from '@/lib/pdf-utils'
-import { ThemeToggle } from '@/components/theme-toggle'
+import Link from 'next/link'
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -93,56 +92,63 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold tracking-tight">
-            ResumeMatch
-          </h1>
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <Button variant="outline" onClick={handleSignOut} className="gap-2 bg-transparent">
-              <LogOut className="w-4 h-4" />
+      <header className="border-b border-border/50">
+        <div className="px-6 md:px-12 py-4 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            <span className="font-display text-2xl tracking-wider">RESUMEMATCH</span>
+            <span className="label-mono text-muted-foreground hidden md:inline">DASHBOARD</span>
+          </Link>
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              onClick={handleSignOut}
+              className="gap-2 bg-transparent border-border/50 hover:border-accent hover:text-accent font-mono uppercase text-[10px] tracking-widest"
+            >
+              <LogOut className="w-3.5 h-3.5" />
               Sign Out
             </Button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+      <main className="px-6 md:px-12 py-12">
         {!results ? (
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-10">
             {/* Input Section */}
             <div className="lg:col-span-2 space-y-8">
               <div>
-                <h2 className="text-4xl font-bold tracking-tight mb-4">Resume Analysis</h2>
-                <p className="text-muted-foreground text-lg">
-                  Upload your resume PDF and paste the job posting to get AI-powered insights on compatibility
+                <span className="label-mono text-accent">ANALYSIS MODULE</span>
+                <h2 className="font-display text-4xl md:text-5xl tracking-wider mt-2">RESUME ANALYSIS</h2>
+                <p className="font-mono text-xs text-muted-foreground mt-3 max-w-lg">
+                  Upload your resume PDF and paste the job posting to receive
+                  AI-powered compatibility insights and signal mapping.
                 </p>
               </div>
 
-              <Card className="border-border p-8 space-y-8">
+              <div className="border border-border/50 bg-card p-8 space-y-8">
+                {/* Resume Upload */}
                 <div>
-                  <label className="block text-sm font-semibold mb-4">Your Resume (PDF)</label>
+                  <label className="label-mono text-muted-foreground mb-4 block">YOUR RESUME (PDF)</label>
                   <div className="space-y-4">
                     <button
                       onClick={() => fileInputRef.current?.click()}
                       disabled={isExtractingPDF || isLoading}
-                      className="w-full border-2 border-dashed border-border rounded-xl p-8 hover:border-accent/50 hover:bg-secondary/50 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-4"
+                      className="w-full border border-dashed border-border/50 p-8 hover:border-accent/50 hover:bg-accent/5 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-4"
                     >
                       {resumeFileName ? (
                         <>
                           <File className="w-6 h-6 text-accent flex-shrink-0" />
                           <div className="text-left">
-                            <p className="font-semibold text-accent">{resumeFileName}</p>
-                            <p className="text-sm text-muted-foreground">Click to change</p>
+                            <p className="font-mono text-sm text-accent">{resumeFileName}</p>
+                            <p className="label-mono text-muted-foreground mt-1">Click to change</p>
                           </div>
                         </>
                       ) : (
                         <>
                           <Upload className="w-6 h-6 text-muted-foreground" />
                           <div className="text-left">
-                            <p className="font-semibold">Upload your resume PDF</p>
-                            <p className="text-sm text-muted-foreground">Click to browse</p>
+                            <p className="font-mono text-sm">Upload your resume PDF</p>
+                            <p className="label-mono text-muted-foreground mt-1">Click to browse</p>
                           </div>
                         </>
                       )}
@@ -155,78 +161,95 @@ export default function DashboardPage() {
                       className="hidden"
                     />
                     {isExtractingPDF && (
-                      <div className="flex items-center justify-center gap-2 text-accent text-sm font-medium">
+                      <div className="flex items-center justify-center gap-2 text-accent font-mono text-xs">
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Extracting text from PDF...
+                        EXTRACTING TEXT FROM PDF...
                       </div>
                     )}
                     {resume && !isExtractingPDF && (
-                      <p className="text-sm text-green-600 dark:text-green-400 font-medium flex items-center gap-2">
-                        ✓ Resume extracted ({resume.length} characters)
+                      <p className="font-mono text-xs text-accent flex items-center gap-2">
+                        SIGNAL RECEIVED — Resume extracted ({resume.length} characters)
                       </p>
                     )}
                   </div>
                 </div>
 
+                <div className="h-px bg-border/30" />
+
+                {/* Job Posting */}
                 <div>
-                  <label className="block text-sm font-semibold mb-4">Job Posting</label>
+                  <label className="label-mono text-muted-foreground mb-4 block">JOB POSTING</label>
                   <Textarea
                     placeholder="Paste the job posting here..."
                     value={jobPosting}
                     onChange={(e) => setJobPosting(e.target.value)}
-                    className="bg-secondary border-border h-56 focus-visible:ring-accent"
+                    className="bg-secondary border-border/50 h-56 font-mono text-sm focus:border-accent"
                   />
                 </div>
 
-                {error && <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-destructive text-sm">{error}</div>}
+                {error && (
+                  <div className="bg-destructive/10 border border-destructive/30 p-4 font-mono text-xs text-destructive">
+                    {error}
+                  </div>
+                )}
 
                 <Button
                   onClick={handleAnalyze}
                   disabled={isLoading}
-                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold gap-2 h-11"
+                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-mono uppercase text-xs tracking-widest gap-2 h-12"
                 >
                   {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-                  {isLoading ? 'Analyzing...' : 'Analyze Resume'}
+                  {isLoading ? 'PROCESSING SIGNALS...' : 'ANALYZE RESUME'}
+                  {!isLoading && <ArrowRight className="w-4 h-4" />}
                 </Button>
-              </Card>
+              </div>
             </div>
 
             {/* Info Section */}
             <div className="space-y-6">
-              <Card className="border-border p-6 space-y-4">
-                <h3 className="font-bold text-lg tracking-tight">What We Analyze</h3>
+              <div className="border border-border/50 bg-card p-6 space-y-5">
+                <div>
+                  <span className="label-mono text-accent">ANALYSIS SCOPE</span>
+                  <h3 className="font-display text-xl tracking-wider mt-2">WHAT WE ANALYZE</h3>
+                </div>
+                <div className="h-px bg-border/30" />
                 <ul className="space-y-3">
-                  <li className="flex gap-3">
-                    <span className="text-accent font-bold">✓</span>
-                    <span className="text-muted-foreground">Skill matching and relevance</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-accent font-bold">✓</span>
-                    <span className="text-muted-foreground">Experience alignment</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-accent font-bold">✓</span>
-                    <span className="text-muted-foreground">Missing keywords and skills</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-accent font-bold">✓</span>
-                    <span className="text-muted-foreground">Compatibility score</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-accent font-bold">✓</span>
-                    <span className="text-muted-foreground">Actionable recommendations</span>
-                  </li>
+                  {[
+                    'Skill matching and relevance',
+                    'Experience alignment',
+                    'Missing keywords and skills',
+                    'Compatibility score',
+                    'Actionable recommendations',
+                  ].map((item) => (
+                    <li key={item} className="flex gap-3 items-start">
+                      <span className="text-accent font-mono text-xs mt-0.5">--</span>
+                      <span className="font-mono text-xs text-muted-foreground">{item}</span>
+                    </li>
+                  ))}
                 </ul>
-              </Card>
+              </div>
 
-              <Card className="border-border bg-secondary p-6 space-y-3">
-                <h3 className="font-bold tracking-tight">Tips for Best Results</h3>
-                <ul className="text-sm text-muted-foreground space-y-2">
-                  <li>• Use the complete job description</li>
-                  <li>• Include all relevant experience</li>
-                  <li>• Be specific about skills</li>
+              <div className="border border-border/50 bg-secondary p-6 space-y-4">
+                <div>
+                  <span className="label-mono text-accent">PROTOCOL</span>
+                  <h3 className="font-display text-xl tracking-wider mt-2">BEST PRACTICES</h3>
+                </div>
+                <div className="h-px bg-border/30" />
+                <ul className="font-mono text-xs text-muted-foreground space-y-2">
+                  <li className="flex gap-2">
+                    <span className="text-accent">01.</span>
+                    Use the complete job description
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-accent">02.</span>
+                    Include all relevant experience
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-accent">03.</span>
+                    Be specific about skills
+                  </li>
                 </ul>
-              </Card>
+              </div>
             </div>
           </div>
         ) : (

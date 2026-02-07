@@ -1,17 +1,12 @@
 import React from "react"
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
 
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 
-const _geist = Geist({ subsets: ['latin'] })
-const _geistMono = Geist_Mono({ subsets: ['latin'] })
-
 export const metadata: Metadata = {
-  title: 'ResumeMatch - AI Resume Analysis',
-  description: 'Analyze how well your resume fits job postings with AI-powered insights',
-  generator: 'v0.app',
+  title: 'RESUMEMATCH — AI Resume Analysis',
+  description: 'Systems that analyze, not screens that display. AI-powered resume matching.',
 }
 
 export default function RootLayout({
@@ -20,10 +15,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body className="font-sans antialiased">
+        <div className="noise-overlay" />
+        <div className="grid-bg fixed inset-0 opacity-30 pointer-events-none" />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-          {children}
+          <div className="relative z-10">
+            {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>

@@ -2,151 +2,199 @@
 
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { ArrowRight, CheckCircle2 } from 'lucide-react'
-import { ThemeToggle } from '@/components/theme-toggle'
+import { ArrowRight } from 'lucide-react'
+import { ScrambleText } from '@/components/scramble-text'
 
 export default function Home() {
   return (
-    <main className="bg-background text-foreground">
+    <main className="bg-background text-foreground min-h-screen">
       {/* Navigation */}
-      <nav className="border-b border-border">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex items-center justify-between">
-          <div className="text-2xl font-bold tracking-tight">ResumeMatch</div>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
+      <nav className="border-b border-border/50 fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-sm">
+        <div className=" px-6 md:px-12 py-4 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            <span className="font-display text-2xl tracking-wider">RESUMEMATCH</span>
+            <span className="label-mono text-muted-foreground hidden md:inline">v.01</span>
+          </Link>
+          <div className="flex items-center gap-4">
             <Link href="/auth/login">
-              <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+              <Button variant="ghost" className="label-mono text-muted-foreground hover:text-accent text-[10px]">
                 Sign In
               </Button>
             </Link>
             <Link href="/auth/signup">
-              <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">Get Started</Button>
+              <Button className="bg-accent hover:bg-accent/90 text-accent-foreground label-mono text-[10px] px-6">
+                Get Started
+              </Button>
             </Link>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-8 py-24 md:py-32">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8">
-            <h1 className="text-6xl md:text-7xl font-bold leading-tight tracking-tight text-balance">
-              AI-Powered Resume Matching
-            </h1>
-            <p className="text-xl text-muted-foreground text-balance leading-relaxed">
-              Discover how your resume stacks up. Get instant insights on skills alignment, experience gaps, and personalized recommendations to land your dream job.
+      <section className="min-h-screen flex items-center relative pt-16">
+        {/* Vertical label */}
+        <div className="absolute left-6 md:left-10 top-1/2 -translate-y-1/2 hidden md:block">
+          <div className="label-mono text-accent -rotate-90 origin-center whitespace-nowrap">
+            SIGNAL
+          </div>
+        </div>
+
+        <div className="px-6 md:px-28 py-32 space-y-12">
+          <div className="label-mono text-muted-foreground">
+            01 / RESUME INTELLIGENCE
+          </div>
+
+          <h1 className="font-display text-[clamp(4rem,12vw,10rem)] leading-[0.85] tracking-wider text-foreground">
+            RESUME<br />
+            <span className="text-accent">MATCH</span>
+          </h1>
+
+          <div className="max-w-xl space-y-6">
+            <p className="text-sm font-mono text-muted-foreground leading-relaxed tracking-wide">
+              Studies in Controlled Environments — We analyze systems that match,
+              not screens that display. AI-powered resume intelligence for
+              precision career alignment.
             </p>
-            <div className="flex gap-4 flex-wrap">
+
+            <div className="flex gap-4 flex-wrap pt-4">
               <Link href="/auth/signup">
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground gap-2">
-                  Start Free <ArrowRight className="w-4 h-4" />
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground gap-3 font-mono uppercase text-xs tracking-widest px-8 h-12">
+                  <ScrambleText text="BEGIN ANALYSIS" scrambleOnMount />
+                  <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline">
-                Learn More
-              </Button>
-            </div>
-            <div className="pt-4 space-y-3">
-              {['Instant AI Analysis', 'PDF Resume Upload', 'Job Fit Scoring'].map((feature) => (
-                <div key={feature} className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0" />
-                  <span className="text-foreground font-medium">{feature}</span>
-                </div>
-              ))}
+              <Link href="#how-it-works">
+                <Button size="lg" variant="outline" className="border-border hover:border-accent hover:text-accent font-mono uppercase text-xs tracking-widest px-8 h-12">
+                  <ScrambleText text="LEARN MORE" />
+                </Button>
+              </Link>
             </div>
           </div>
 
-          {/* Feature Highlight */}
-          <div className="space-y-6">
-            <div className="bg-secondary rounded-2xl p-8 border border-border">
-              <div className="space-y-4">
-                <div className="text-sm font-semibold text-accent uppercase tracking-widest">Performance</div>
-                <div className="text-4xl font-bold">94%</div>
-                <p className="text-muted-foreground">Average match score improvement after using ResumeMatch</p>
+          {/* Stats row */}
+          <div className="grid grid-cols-3 gap-8 pt-12 border-t border-border/50 max-w-xl">
+            {[
+              { value: '94%', label: 'ACCURACY' },
+              { value: '10K+', label: 'ANALYZED' },
+              { value: '<3s', label: 'RESPONSE' },
+            ].map((stat) => (
+              <div key={stat.label}>
+                <div className="font-display text-3xl md:text-4xl text-foreground">{stat.value}</div>
+                <div className="label-mono text-muted-foreground mt-1">{stat.label}</div>
               </div>
-            </div>
-
-            <div className="bg-secondary rounded-2xl p-8 border border-border">
-              <div className="space-y-4">
-                <div className="text-sm font-semibold text-accent uppercase tracking-widest">Trusted By</div>
-                <p className="text-lg font-semibold">10,000+ Job Seekers</p>
-                <p className="text-muted-foreground">Across finance, tech, and professional services</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* How It Works */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-8 py-24 border-t border-border">
-        <div className="space-y-16">
-          <div className="space-y-4">
-            <h2 className="text-5xl font-bold tracking-tight">How It Works</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl">Three simple steps to optimize your resume and land more interviews.</p>
-          </div>
+      <section id="how-it-works" className="py-32 border-t border-border/50">
+        <div className=" px-6 md:px-28">
+          <div className="space-y-16">
+            <div className="flex items-baseline gap-4">
+              <span className="label-mono text-accent">02 / PROCESS</span>
+              <h2 className="font-display text-5xl md:text-7xl tracking-wider">HOW IT WORKS</h2>
+            </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { step: '01', title: 'Upload Resume', desc: 'Select and upload your resume PDF. Our system instantly extracts and analyzes your content.' },
-              { step: '02', title: 'Paste Job Post', desc: 'Share the job description you\'re targeting. We extract key requirements and qualifications.' },
-              { step: '03', title: 'Get Insights', desc: 'Receive detailed analysis with compatibility scores, missing skills, and personalized recommendations.' },
-            ].map((item) => (
-              <div key={item.step} className="group">
-                <div className="text-6xl font-bold text-secondary mb-6">{item.step}</div>
-                <h3 className="text-2xl font-bold mb-3">{item.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
+            <div className="grid md:grid-cols-3 gap-12">
+              {[
+                { step: '01', title: 'UPLOAD RESUME', desc: 'Select and upload your resume PDF. Our system instantly extracts and analyzes your content with precision.' },
+                { step: '02', title: 'PASTE JOB POST', desc: 'Share the job description you\'re targeting. We extract key requirements, qualifications, and signals.' },
+                { step: '03', title: 'GET INSIGHTS', desc: 'Receive detailed analysis with compatibility scores, missing skills, and controlled recommendations.' },
+              ].map((item) => (
+                <div key={item.step} className="group border border-border/50 p-8 hover:border-accent/50 transition-colors">
+                  <div className="font-display text-6xl text-accent/20 group-hover:text-accent/50 transition-colors mb-6">{item.step}</div>
+                  <h3 className="font-display text-2xl tracking-wider mb-4">{item.title}</h3>
+                  <p className="font-mono text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                  <div className="h-px bg-border/50 group-hover:bg-accent/50 mt-6 transition-colors" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Benefits */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-8 py-24 border-t border-border">
-        <div className="space-y-16">
-          <div className="space-y-4">
-            <h2 className="text-5xl font-bold tracking-tight">Why ResumeMatch?</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl">Everything you need to stand out to recruiters</p>
-          </div>
+      {/* Benefits / Principles */}
+      <section className="py-32 border-t border-border/50">
+        <div className=" px-6 md:px-28">
+          <div className="space-y-16">
+            <div className="flex items-baseline gap-4">
+              <span className="label-mono text-accent">03 / PRINCIPLES</span>
+              <h2 className="font-display text-5xl md:text-7xl tracking-wider">WHY US</h2>
+            </div>
 
-          <div className="grid md:grid-cols-2 gap-12">
-            {[
-              { title: 'AI-Powered Analysis', desc: 'Advanced machine learning analyzes your resume against job requirements with precision.' },
-              { title: 'Instant Feedback', desc: 'Get results in seconds. No waiting, no guesswork. Pure actionable intelligence.' },
-              { title: 'Skill Gap Detection', desc: 'Identify missing skills and experience. Know exactly what you need to address.' },
-              { title: 'Privacy First', desc: 'Your resume data is encrypted and never shared. Enterprise-grade security standard.' },
-            ].map((benefit, idx) => (
-              <div key={idx} className="space-y-4">
-                <h3 className="text-2xl font-bold">{benefit.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{benefit.desc}</p>
-              </div>
-            ))}
+            <div className="space-y-0">
+              {[
+                { title: 'AI-POWERED ANALYSIS', desc: 'Advanced machine learning analyzes your resume against job requirements with clinical precision. Every signal matters.' },
+                { title: 'INSTANT FEEDBACK', desc: 'Get results in seconds. No waiting, no guesswork. Pure actionable intelligence delivered in controlled environments.' },
+                { title: 'SKILL GAP DETECTION', desc: 'Identify missing skills and experience with clarity. Know exactly what signals you need to strengthen.' },
+                { title: 'PRIVACY FIRST', desc: 'Your resume data is encrypted and never shared. Enterprise-grade security as standard protocol.' },
+              ].map((benefit, idx) => (
+                <div key={idx} className="flex flex-col md:flex-row items-start gap-8 py-12 border-b border-border/50 group hover:border-accent/30 transition-colors">
+                  <div className="md:w-1/2">
+                    <h3 className="font-display text-3xl md:text-5xl tracking-wider group-hover:text-accent transition-colors">
+                      {benefit.title}
+                    </h3>
+                  </div>
+                  <div className="md:w-1/2">
+                    <p className="font-mono text-xs text-muted-foreground leading-relaxed">{benefit.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-8 py-24 border-t border-border">
-        <div className="rounded-2xl bg-secondary border border-border p-12 md:p-16 text-center space-y-6">
-          <h2 className="text-5xl font-bold tracking-tight">Ready to Optimize?</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Join thousands of job seekers who've improved their resume match. Start free today.
-          </p>
-          <Link href="/auth/signup">
-            <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
-              Get Started Free
-            </Button>
-          </Link>
+      <section className="py-32 border-t border-border/50">
+        <div className=" px-6 md:px-28">
+          <div className="border border-border/50 p-12 md:p-20 text-center space-y-8">
+            <span className="label-mono text-accent">04 / INITIALIZE</span>
+            <h2 className="font-display text-5xl md:text-7xl tracking-wider">READY TO<br /><span className="text-accent">OPTIMIZE?</span></h2>
+            <p className="font-mono text-xs text-muted-foreground max-w-lg mx-auto leading-relaxed">
+              Join thousands of candidates who&apos;ve improved their resume signal.
+              Begin your controlled analysis today.
+            </p>
+            <Link href="/auth/signup">
+              <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-mono uppercase text-xs tracking-widest px-10 h-12 mt-4">
+                <ScrambleText text="INITIALIZE" />
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border mt-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 flex items-center justify-between">
-          <p className="text-muted-foreground">Copyright 2024 ResumeMatch. All rights reserved.</p>
-          <div className="flex gap-8 text-muted-foreground text-sm">
-            <Link href="#" className="hover:text-foreground transition">Privacy</Link>
-            <Link href="#" className="hover:text-foreground transition">Terms</Link>
+      {/* Footer / Colophon */}
+      <footer className="border-t border-border/50 py-16">
+        <div className=" px-6 md:px-28">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+            <div>
+              <div className="label-mono text-accent mb-3">DESIGN</div>
+              <p className="font-mono text-xs text-muted-foreground">Interface Studies</p>
+            </div>
+            <div>
+              <div className="label-mono text-accent mb-3">STACK</div>
+              <p className="font-mono text-xs text-muted-foreground">Next.js, Tailwind CSS, Vercel</p>
+            </div>
+            <div>
+              <div className="label-mono text-accent mb-3">TYPOGRAPHY</div>
+              <p className="font-mono text-xs text-muted-foreground">Bebas Neue, IBM Plex</p>
+            </div>
+            <div>
+              <div className="label-mono text-accent mb-3">YEAR</div>
+              <p className="font-mono text-xs text-muted-foreground">2025 / Ongoing</p>
+            </div>
+          </div>
+          <div className="flex items-center justify-between pt-8 border-t border-border/50">
+            <p className="label-mono text-muted-foreground">
+              &copy; 2025 RESUMEMATCH. ALL RIGHTS RESERVED.
+            </p>
+            <div className="flex gap-8">
+              <Link href="#" className="label-mono text-muted-foreground hover:text-accent transition">Privacy</Link>
+              <Link href="#" className="label-mono text-muted-foreground hover:text-accent transition">Terms</Link>
+            </div>
           </div>
         </div>
       </footer>
