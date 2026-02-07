@@ -8,12 +8,12 @@ Unlike typical AI resume tools, Fitloop is designed to improve what you already 
 
 ### ✨ What Fitloop does
 
-* Compares your resume with a specific job description
-* Identifies missing skills, tools, keywords, and weak impact statements
-* Explains why each gap matters for the role
-* Suggests only safe, truthful improvements
-* Generates a clean, updated resume optimized for ATS
-* Exports the final resume as a downloadable PDF
+- Compares your resume with a specific job description
+- Identifies missing skills, tools, keywords, and weak impact statements
+- Explains why each gap matters for the role
+- Suggests only safe, truthful improvements
+- Generates a clean, updated resume optimized for ATS
+- Exports the final resume as a downloadable PDF
 
 ### 🎯 Key principle
 
@@ -22,11 +22,11 @@ Unlike typical AI resume tools, Fitloop is designed to improve what you already 
 
 ### 🛠 Tech stack
 
-* Next.js (App Router) – full-stack application
-* Supabase – authentication and database
-* OpenAI – structured resume and gap analysis
-* Tailwind CSS & Framer Motion – modern UI and animations
-* Playwright – HTML to PDF generation
+- Next.js (App Router) – full-stack application
+- Supabase – authentication and database
+- OpenAI – structured resume and gap analysis
+- Tailwind CSS & Framer Motion – modern UI and animations
+- Playwright – HTML to PDF generation
 
 Fitloop is built as a lightweight, production-ready MVP focused on a single workflow:
 **resume → job post → gap analysis → improved resume → PDF.**
