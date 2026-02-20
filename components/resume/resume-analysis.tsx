@@ -64,13 +64,42 @@ interface ResumeProps {
   onNewAnalysis: () => void
   resumeText?: string
   jobPosting?: string
+  resumeFilePath?: string
 }
 
-export default function Resume({ data, onNewAnalysis, resumeText, jobPosting }: ResumeProps) {
+export default function Resume({ data, onNewAnalysis, resumeText, jobPosting, resumeFilePath }: ResumeProps) {
   const [isGenerating, setIsGenerating] = useState(false)
   const [improvedResume, setImprovedResume] = useState<ImprovedResumeData | null>(null)
   const [error, setError] = useState('')
   const [showImprovements, setShowImprovements] = useState(true)
+  const [isDownloading, setIsDownloading] = useState(false)
+
+  // Download the original PDF from storage
+  const downloadOriginalPDF = async () => {
+    if (!resumeFilePath) {
+      toast.error('No original PDF available. The resume may have been uploaded directly as text.')
+      return
+    }
+
+    setIsDownloading(true)
+    try {
+      const response = await fetch(`/api/resumes/download?path=${encodeURIComponent(resumeFilePath)}`)
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to get download link')
+      }
+
+      // Open the signed URL in a new tab to download
+      window.open(data.url, '_blank')
+      toast.success('Opening your original PDF...')
+    } catch (err) {
+      console.error('Download error:', err)
+      toast.error('Failed to download original PDF')
+    } finally {
+      setIsDownloading(false)
+    }
+  }
 
   const generateImprovedResume = async () => {
     if (!resumeText || !jobPosting) {
@@ -267,12 +296,32 @@ export default function Resume({ data, onNewAnalysis, resumeText, jobPosting }: 
             <h2 className="font-display text-4xl tracking-wider mt-2">RESULTS</h2>
             <p className="font-mono text-xs text-muted-foreground leading-relaxed max-w-xl">{data.summary}</p>
             <div className="flex flex-wrap gap-4 pt-4">
+              {resumeFilePath && (
+                <Button
+                  onClick={downloadOriginalPDF}
+                  disabled={isDownloading}
+                  className="gap-2 bg-blue-600 hover:bg-blue-700 text-white font-mono uppercase text-[10px] tracking-widest"
+                >
+                  {isDownloading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      LOADING...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-4 h-4" />
+                      DOWNLOAD ORIGINAL PDF
+                    </>
+                  )}
+                </Button>
+              )}
               <Button
                 onClick={downloadPDF}
-                className="gap-2 bg-accent hover:bg-accent/90 text-accent-foreground font-mono uppercase text-[10px] tracking-widest"
+                variant="outline"
+                className="gap-2 bg-transparent border-border/50 hover:border-accent hover:text-accent font-mono uppercase text-[10px] tracking-widest"
               >
                 <Download className="w-4 h-4" />
-                DOWNLOAD PDF
+                ANALYSIS REPORT
               </Button>
               <Button
                 onClick={generateImprovedResume}
@@ -287,7 +336,7 @@ export default function Resume({ data, onNewAnalysis, resumeText, jobPosting }: 
                 ) : (
                   <>
                     <Sparkles className="w-4 h-4" />
-                    GENERATE IMPROVED RESUME
+                    GET IMPROVEMENT SUGGESTIONS
                   </>
                 )}
               </Button>
@@ -445,9 +494,28 @@ export default function Resume({ data, onNewAnalysis, resumeText, jobPosting }: 
                 <span className="label-mono text-green-500">AI-ENHANCED SUGGESTIONS</span>
                 <h2 className="font-display text-4xl tracking-wider mt-2">RESUME IMPROVEMENTS</h2>
                 <p className="font-mono text-xs text-muted-foreground leading-relaxed max-w-xl">
-                  Below are optimized text suggestions for your resume. <strong className="text-foreground">Copy these improvements and paste them into your original resume</strong> to preserve your design while enhancing the content for this job posting.
+                  Below are optimized text suggestions for your resume. <strong className="text-foreground">Download your original PDF, then copy and paste these improvements</strong> to preserve your design while enhancing the content for this job posting.
                 </p>
                 <div className="flex flex-wrap gap-4 pt-4">
+                  {resumeFilePath && (
+                    <Button
+                      onClick={downloadOriginalPDF}
+                      disabled={isDownloading}
+                      className="gap-2 bg-blue-600 hover:bg-blue-700 text-white font-mono uppercase text-[10px] tracking-widest"
+                    >
+                      {isDownloading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          LOADING...
+                        </>
+                      ) : (
+                        <>
+                          <Download className="w-4 h-4" />
+                          DOWNLOAD ORIGINAL PDF
+                        </>
+                      )}
+                    </Button>
+                  )}
                   <Button
                     onClick={copyAllImprovements}
                     className="gap-2 bg-green-600 hover:bg-green-700 text-white font-mono uppercase text-[10px] tracking-widest"

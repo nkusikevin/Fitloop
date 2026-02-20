@@ -28,7 +28,7 @@ interface Resume {
 }
 
 interface ResumeManagerProps {
-    onResumeSelect?: (resumeText: string, fileName: string) => void
+    onResumeSelect?: (resumeText: string, fileName: string, filePath?: string) => void
 }
 
 export function ResumeManager({ onResumeSelect }: ResumeManagerProps) {
@@ -56,7 +56,7 @@ export function ResumeManager({ onResumeSelect }: ResumeManagerProps) {
                 // Auto-select default resume if exists
                 const defaultResume = data.resumes?.find((r: Resume) => r.is_default)
                 if (defaultResume && onResumeSelect) {
-                    onResumeSelect(defaultResume.resume_text, defaultResume.file_name)
+                    onResumeSelect(defaultResume.resume_text, defaultResume.file_name, defaultResume.file_path)
                 }
             } else {
                 setError(data.error || 'Failed to fetch resumes')
@@ -162,7 +162,7 @@ export function ResumeManager({ onResumeSelect }: ResumeManagerProps) {
 
     const handleSelectResume = (resume: Resume) => {
         if (onResumeSelect) {
-            onResumeSelect(resume.resume_text, resume.file_name)
+            onResumeSelect(resume.resume_text, resume.file_name, resume.file_path)
         }
     }
 
