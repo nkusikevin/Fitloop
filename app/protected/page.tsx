@@ -27,6 +27,7 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [resume, setResume] = useState('')
   const [resumeFileName, setResumeFileName] = useState<string>('')
+  const [resumeFilePath, setResumeFilePath] = useState<string>('')
   const [jobPosting, setJobPosting] = useState('')
   const [results, setResults] = useState<any>(null)
   const [error, setError] = useState('')
@@ -63,9 +64,10 @@ export default function DashboardPage() {
     router.push('/')
   }
 
-  const handleResumeSelect = (resumeText: string, fileName: string) => {
+  const handleResumeSelect = (resumeText: string, fileName: string, filePath?: string) => {
     setResume(resumeText)
     setResumeFileName(fileName)
+    setResumeFilePath(filePath || '')
     setError('')
   }
 
@@ -390,7 +392,13 @@ export default function DashboardPage() {
             </div>
           </div>
         ) : (
-          <Resume data={results} onNewAnalysis={() => setResults(null)} />
+          <Resume 
+            data={results} 
+            onNewAnalysis={() => setResults(null)} 
+            resumeText={resume}
+            jobPosting={jobPosting}
+            resumeFilePath={resumeFilePath}
+          />
         )}
       </main>
     </div>
