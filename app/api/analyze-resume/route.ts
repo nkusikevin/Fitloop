@@ -93,7 +93,7 @@ export async function POST(request: Request) {
     const { object } = await generateObject({
       model,
       schema: analysisSchema,
-      prompt: `You are an expert HR recruiter and career coach. Analyze how well this resume matches the job posting.
+      prompt: `You are an expert HR recruiter and career coach with 20+ years of experience. Analyze how well this resume matches the job posting using a systematic scoring approach.
 
 RESUME:
 ${resume}
@@ -101,7 +101,42 @@ ${resume}
 JOB POSTING:
 ${jobPosting}
 
-Provide a detailed analysis with the schema specified. Be objective and constructive. The overall score should reflect how well the resume aligns with the job requirements (0-100).`,
+SCORING METHODOLOGY:
+Calculate the overall score (0-100) based on these weighted criteria:
+
+1. REQUIRED SKILLS MATCH (40% weight):
+   - Identify all required/must-have skills from the job posting
+   - Count how many are present in the resume
+   - Score = (skills_matched / total_required_skills) * 40
+
+2. EXPERIENCE ALIGNMENT (30% weight):
+   - Years of experience match (10%)
+   - Industry/domain relevance (10%)
+   - Role-level appropriateness (10%)
+
+3. PREFERRED QUALIFICATIONS (20% weight):
+   - Nice-to-have skills present
+   - Certifications or education match
+   - Additional relevant experience
+
+4. PRESENTATION & KEYWORDS (10% weight):
+   - Relevant keywords from job posting in resume
+   - Professional formatting indicators
+   - Clear achievement descriptions
+
+IMPORTANT SCORING GUIDELINES:
+- Be precise and realistic - don't inflate scores
+- A score of 80+ should indicate a very strong match (interview-worthy)
+- A score of 60-79 indicates a moderate match with some gaps
+- A score of 40-59 indicates significant gaps but some transferable skills
+- A score below 40 indicates poor alignment
+- matchPercentage should equal overallScore
+
+For missingSkills: List ONLY skills explicitly required in the job posting that are NOT mentioned in the resume.
+For matchedSkills: List ONLY skills from the resume that DIRECTLY match job requirements.
+For recommendations: Provide specific, actionable improvements the candidate can make to strengthen their application.
+
+Be thorough but fair in your assessment.`,
     })
 
     console.log('✅ API Route - AI generation completed successfully')

@@ -390,7 +390,12 @@ export default function DashboardPage() {
             </div>
           </div>
         ) : (
-          <Resume data={results} onNewAnalysis={() => setResults(null)} />
+          <Resume 
+            data={results} 
+            onNewAnalysis={() => setResults(null)} 
+            resumeText={resume}
+            jobPosting={jobPosting}
+          />
         )}
       </main>
     </div>
