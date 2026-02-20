@@ -1,9 +1,41 @@
 import { StructuredResume } from './resume-types'
 
+// Clean text before LaTeX escaping - decode HTML entities and remove artifacts
+function cleanText(text: string): string {
+  if (!text) return ''
+  
+  let cleaned = text
+  
+  // Decode common HTML entities first
+  const htmlEntities: Record<string, string> = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&#39;': "'",
+    '&nbsp;': ' ',
+    '&ndash;': '–',
+    '&mdash;': '—',
+    '&bull;': '•',
+  }
+  
+  for (const [entity, char] of Object.entries(htmlEntities)) {
+    cleaned = cleaned.replace(new RegExp(entity, 'g'), char)
+  }
+  
+  // Remove garbage characters
+  cleaned = cleaned.replace(/[%Ï\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
+  
+  return cleaned
+}
+
 // Escape special LaTeX characters
 // Note: Order matters - backslash must be replaced first to avoid double-escaping
 function escapeLatex(text: string): string {
   if (!text) return ''
+  
+  // First clean the text
+  let result = cleanText(text)
   
   // Map of special LaTeX characters to their escape sequences
   const latexEscapes: [RegExp, string][] = [
@@ -19,7 +51,6 @@ function escapeLatex(text: string): string {
     [/\^/g, '\\textasciicircum{}'],
   ]
   
-  let result = text
   for (const [pattern, replacement] of latexEscapes) {
     result = result.replace(pattern, replacement)
   }
