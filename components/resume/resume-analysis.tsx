@@ -19,11 +19,13 @@ import {
   ChevronUp,
   Eye,
   X,
+  Code,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { parseResumeText, StructuredResume, generateId } from '@/lib/resume-types'
 import { ResumePreview, DiffViewer } from '@/components/resume/resume-preview'
 import { downloadResumePDF } from '@/lib/pdf-generator'
+import { downloadLatexBundle } from '@/lib/latex-generator'
 
 interface AnalysisData {
   overallScore: number
@@ -184,6 +186,13 @@ export default function Resume({ data, onNewAnalysis, resumeText, jobPosting }: 
     }
   }
 
+  const handleDownloadLatex = () => {
+    if (improvedResume) {
+      downloadLatexBundle(improvedResume, false)
+      toast.success('Downloading FAANG LaTeX template! Upload both files to Overleaf to compile.')
+    }
+  }
+
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-accent'
     if (score >= 60) return 'text-yellow-500'
@@ -241,6 +250,13 @@ export default function Resume({ data, onNewAnalysis, resumeText, jobPosting }: 
                     >
                       <Download className="w-4 h-4" />
                       DOWNLOAD PDF
+                    </Button>
+                    <Button
+                      onClick={handleDownloadLatex}
+                      className="gap-2 bg-blue-600 hover:bg-blue-700 text-white font-mono uppercase text-[10px] tracking-widest"
+                    >
+                      <Code className="w-4 h-4" />
+                      FAANG LATEX
                     </Button>
                     <Button
                       onClick={handleDownloadHighlightedPDF}

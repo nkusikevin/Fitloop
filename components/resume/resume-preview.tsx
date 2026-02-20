@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react'
 import { StructuredResume } from '@/lib/resume-types'
 import { generateResumePDFUrl, downloadResumePDF } from '@/lib/pdf-generator'
+import { downloadLatexBundle } from '@/lib/latex-generator'
 import { Button } from '@/components/ui/button'
-import { Download, Eye, RefreshCw, Check, FileText } from 'lucide-react'
+import { Download, Eye, RefreshCw, Check, FileText, Code } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface ResumePreviewProps {
@@ -58,6 +59,13 @@ export function ResumePreview({ originalResume, improvedResume, onDownload }: Re
     if (improvedResume) {
       downloadResumePDF(improvedResume, 'resume-with-highlights.pdf', true)
       toast.success('Downloading resume with highlighted changes!')
+    }
+  }
+
+  const handleDownloadLatex = () => {
+    if (improvedResume) {
+      downloadLatexBundle(improvedResume, false)
+      toast.success('Downloading FAANG LaTeX template! Upload both files to Overleaf.')
     }
   }
 
@@ -203,7 +211,7 @@ export function ResumePreview({ originalResume, improvedResume, onDownload }: Re
 
       {/* Footer with download buttons */}
       {improvedResume && (
-        <div className="p-3 border-t border-border/50 bg-secondary/30 flex gap-2 justify-end">
+        <div className="p-3 border-t border-border/50 bg-secondary/30 flex gap-2 justify-end flex-wrap">
           <Button
             onClick={handleDownloadHighlighted}
             variant="outline"
@@ -214,12 +222,20 @@ export function ResumePreview({ originalResume, improvedResume, onDownload }: Re
             With Highlights
           </Button>
           <Button
+            onClick={handleDownloadLatex}
+            size="sm"
+            className="gap-2 bg-blue-600 hover:bg-blue-700 text-white font-mono text-[10px] uppercase"
+          >
+            <Code className="w-3 h-3" />
+            FAANG LaTeX
+          </Button>
+          <Button
             onClick={handleDownloadImproved}
             size="sm"
             className="gap-2 bg-green-600 hover:bg-green-700 text-white font-mono text-[10px] uppercase"
           >
             <Download className="w-3 h-3" />
-            Download Final PDF
+            Download PDF
           </Button>
         </div>
       )}
