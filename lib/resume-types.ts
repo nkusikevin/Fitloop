@@ -60,7 +60,7 @@ export interface StructuredResume {
 }
 
 // Generate a unique ID (works in all environments)
-function generateId(): string {
+export function generateId(): string {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
     return crypto.randomUUID()
   }

@@ -21,7 +21,7 @@ import {
   X,
 } from 'lucide-react'
 import { toast } from 'sonner'
-import { parseResumeText, StructuredResume, applyImprovements } from '@/lib/resume-types'
+import { parseResumeText, StructuredResume, generateId } from '@/lib/resume-types'
 import { ResumePreview, DiffViewer } from '@/components/resume/resume-preview'
 import { downloadResumePDF } from '@/lib/pdf-generator'
 
@@ -95,7 +95,7 @@ export default function Resume({ data, onNewAnalysis, resumeText, jobPosting }: 
       originalSkills: originalResume.skills,
       skillsModified: true,
       experience: improvedResumeData.experience.map((exp, idx) => ({
-        id: originalResume.experience[idx]?.id || crypto.randomUUID(),
+        id: originalResume.experience[idx]?.id || generateId(),
         title: exp.title,
         company: exp.company,
         startDate: originalResume.experience[idx]?.startDate || '',
