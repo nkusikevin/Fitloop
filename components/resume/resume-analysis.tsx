@@ -79,8 +79,13 @@ export default function Resume({ data, onNewAnalysis, resumeText, jobPosting }: 
     let apiKeyConfig = null
 
     if (stored) {
-      const keys = JSON.parse(stored)
-      apiKeyConfig = keys.find((key: { is_active: boolean }) => key.is_active)
+      try {
+        const keys = JSON.parse(stored)
+        apiKeyConfig = keys.find((key: { is_active: boolean }) => key.is_active)
+      } catch {
+        setError('Invalid API key configuration. Please check your Settings.')
+        return
+      }
     }
 
     if (!apiKeyConfig) {

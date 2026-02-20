@@ -85,7 +85,7 @@ export async function POST(request: Request) {
 IMPORTANT GUIDELINES:
 1. DO NOT fabricate experience or skills the candidate doesn't have
 2. Rewrite existing content to highlight relevant skills and achievements
-3. Add quantifiable metrics where reasonable to estimate based on role type
+3. If the original resume includes metrics, keep or refine them. If metrics are missing, suggest adding them as placeholders like "[X%]" or "[X projects]" that the candidate can fill in - DO NOT invent specific numbers
 4. Use strong action verbs and industry-specific keywords from the job posting
 5. Optimize the professional summary to address key job requirements
 6. Reorganize skills to prioritize those mentioned in the job posting
@@ -106,9 +106,10 @@ ${analysisData ? `ANALYSIS RESULTS:
 Generate an improved version of this resume that:
 1. Has a compelling professional summary tailored to this specific job
 2. Highlights skills that match the job requirements (only include skills the candidate actually has)
-3. Enhances experience bullet points with stronger action verbs and quantifiable achievements
+3. Enhances experience bullet points with stronger action verbs and achievement-focused language
 4. Incorporates relevant keywords from the job posting naturally
 5. Addresses identified gaps by reframing existing experience where applicable
+6. Uses placeholder brackets like "[X]" for any suggested metrics the candidate should fill in
 
 For each improvement, explain the specific change and why it makes the resume stronger.`,
     })
